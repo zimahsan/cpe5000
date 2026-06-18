@@ -3,7 +3,7 @@
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Slide Remote</title>
+    <title>Remote Control</title>
     <style>
         body {
             display: flex;
@@ -36,16 +36,30 @@
 
 <body>
 
-    <h2>Slide Controller</h2>
+    <h2>Slide Remote</h2>
 
     <button class="prev" onclick="send('prev')">◀ Prev</button>
     <button class="next" onclick="send('next')">Next ▶</button>
 
-    <script>
-        const channel = new BroadcastChannel("slides");
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 
-        function send(action) {
-            channel.postMessage(action);
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyAHbM5DMVwyoZQWczJ8D3QtYawHBEOex64",
+            authDomain: "slide-remote-129b8.firebaseapp.com",
+            projectId: "slide-remote-129b8",
+            storageBucket: "slide-remote-129b8.firebasestorage.app",
+            messagingSenderId: "789464647586",
+            appId: "1:789464647586:web:dce9d5b14c35fa225a54fb",
+            measurementId: "G-Q0PTYBDRX7"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        function send(cmd) {
+            db.ref("slides/control").set(cmd);
         }
     </script>
 
