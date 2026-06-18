@@ -177,26 +177,29 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+
     <script>
         const firebaseConfig = {
-            apiKey: "AIzaSyAHbM5DMVwyoZQWczJ8D3QtYawHBEOex64",
+            apiKey: "AIzaSyAHbM5DMVwy8D3QtYawHBEOex64",
             authDomain: "slide-remote-129b8.firebaseapp.com",
             databaseURL: "https://slide-remote-129b8-default-rtdb.asia-southeast1.firebasedatabase.app",
             projectId: "slide-remote-129b8",
             storageBucket: "slide-remote-129b8.firebasestorage.app",
             messagingSenderId: "789464647586",
-            appId: "1:789464647586:web:dce9d5b14c35fa225a54fb",
-            measurementId: "G-Q0PTYBDRX7"
+            appId: "1:789464647586:web:dce9d5b14c35fa225a54fb"
         };
 
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // LISTEN for phone commands
-        db.ref("slides/control").on("value", (snap) => {
-            const cmd = snap.val();
-            if (cmd === "next") Reveal.next();
-            if (cmd === "prev") Reveal.prev();
+        // LISTEN for remote commands
+        db.ref("slides").on("child_added", (snap) => {
+            const data = snap.val();
+
+            if (data.action === "next") Reveal.next();
+            if (data.action === "prev") Reveal.prev();
         });
     </script>
 </body>
