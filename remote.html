@@ -20,15 +20,6 @@
     <button onclick="sendCommand('next')">Next ➡</button>
 
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
-
-        const firebaseConfig = {
-            // YOUR FIREBASE CONFIG
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
 
         window.sendCommand = function (cmd) {
             set(ref(db, 'presentation/control'), {
