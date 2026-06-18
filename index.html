@@ -177,8 +177,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 
-    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+
 
     <script>
         const firebaseConfig = {
@@ -195,7 +194,7 @@
         const db = firebase.database();
 
         // LISTEN for remote commands
-        db.ref("slides").on("child_added", (snap) => {
+        db.ref("slides").limitToLast(1).on("child_added", (snap) => {
             const data = snap.val();
 
             if (data.action === "next") Reveal.next();
