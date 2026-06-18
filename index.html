@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/dracula.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/reveal.js/plugin/notes/notes.js"></script>
 </head>
 
 <body>
@@ -163,8 +164,34 @@
         Reveal.initialize({
             hash: true,
             slideNumber: 'c/t',
-            transition: 'slide', // none/fade/slide/convex/concave/zoom
-            plugins: [RevealMarkdown]
+            transition: 'slide',
+            plugins: [RevealMarkdown, RevealNotes]
+        });
+    </script>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+        const firebaseConfig = {
+            // SAME FIREBASE CONFIG
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        onValue(ref(db, 'presentation/control'), (snapshot) => {
+            const data = snapshot.val();
+
+            if (!data) return;
+
+            if (data.command === 'next') {
+                Reveal.next();
+            }
+
+            if (data.command === 'prev') {
+                Reveal.prev();
+            }
         });
     </script>
 </body>

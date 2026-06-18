@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Presentation Remote</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        button {
+            width: 100%;
+            height: 150px;
+            font-size: 40px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <button onclick="sendCommand('prev')">⬅ Previous</button>
+    <button onclick="sendCommand('next')">Next ➡</button>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+        const firebaseConfig = {
+            // YOUR FIREBASE CONFIG
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        window.sendCommand = function (cmd) {
+            set(ref(db, 'presentation/control'), {
+                command: cmd,
+                timestamp: Date.now()
+            });
+        }
+    </script>
+
+</body>
+
+</html>
