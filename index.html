@@ -163,11 +163,14 @@
         Reveal.initialize({
             hash: true,
             slideNumber: 'c/t',
-            transition: 'slide', // none/fade/slide/convex/concave/zoom
+            transition: 'slide',
+
             plugins: [RevealMarkdown],
+
             controls: true,
             touch: true,
-
+            embedded: false,
+            disableLayout: false
         });
     </script>
 </body>
