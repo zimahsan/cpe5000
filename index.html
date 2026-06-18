@@ -173,6 +173,15 @@
             disableLayout: false
         });
     </script>
+
+    <script>
+        const channel = new BroadcastChannel("slides");
+
+        channel.onmessage = (event) => {
+            if (event.data === "next") Reveal.next();
+            if (event.data === "prev") Reveal.prev();
+        };
+    </script>
 </body>
 
 </html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slide Remote</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial;
+            gap: 20px;
+        }
+
+        button {
+            font-size: 30px;
+            padding: 20px 40px;
+            border: none;
+            border-radius: 10px;
+        }
+
+        .next {
+            background: green;
+            color: white;
+        }
+
+        .prev {
+            background: red;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Slide Controller</h2>
+
+    <button class="prev" onclick="send('prev')">◀ Prev</button>
+    <button class="next" onclick="send('next')">Next ▶</button>
+
+    <script>
+        const channel = new BroadcastChannel("slides");
+
+        function send(action) {
+            channel.postMessage(action);
+        }
+    </script>
+
+</body>
+
+</html>
