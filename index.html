@@ -193,12 +193,9 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // LISTEN for remote commands
-        db.ref("slides").limitToLast(1).on("child_added", (snap) => {
+        db.ref("slides").on("child_added", snap => {
             const data = snap.val();
-
-            if (data.action === "next") Reveal.next();
-            if (data.action === "prev") Reveal.prev();
+            Reveal.slide(Reveal.getIndices().h + (data.action === "next" ? 1 : -1));
         });
     </script>
 </body>
