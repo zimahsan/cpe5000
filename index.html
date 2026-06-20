@@ -2,13 +2,845 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Counseling Analysis Presentation - Master of Counseling</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Quicksand:wght@400;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #FFFDEB 0%, #E6F7F4 100%);
+            --primary-teal: #1F8A80;
+            --primary-yellow: #FFDE59;
+            --accent-orange: #FF914D;
+            --card-glass: rgba(255, 255, 255, 0.85);
+            --text-dark: #2C3E50;
+            --text-muted: #576574;
+            --shadow: 0 8px 32px 0 rgba(31, 138, 128, 0.08);
+            --radius: 20px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            overflow-x: hidden;
+
+        }
+
+        h1,
+        h2,
+        h3,
+        .slide-title {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+        }
+
+        p {
+            font-size: x-large;
+        }
+
+
+        /* Presentation Container */
+        .presentation-wrapper {
+            display: flex;
+            width: 100%;
+            max-width: 1600px;
+            margin: 0 auto;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Interactive Left Sidebar Control Menu */
+        .sidebar-nav {
+            width: 320px;
+            background: white;
+            border-right: 2px solid #F0F4F8;
+            padding: 40px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            z-index: 10;
+        }
+
+        .brand-zone {
+            margin-bottom: 30px;
+        }
+
+        .brand-zone h2 {
+            font-size: 24px;
+            color: var(--primary-teal);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand-subtitle {
+            font-size: 13px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 4px;
+            font-weight: 600;
+        }
+
+        .nav-item {
+            background: none;
+            border: none;
+            text-align: left;
+            padding: 14px 20px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-item:hover {
+            background: #FAFAFA;
+            color: var(--primary-teal);
+            transform: translateX(4px);
+        }
+
+        .nav-item.active {
+            background: var(--primary-yellow);
+            color: var(--text-dark);
+            box-shadow: 0 4px 15px rgba(255, 222, 89, 0.4);
+        }
+
+        /* Slide Window Area */
+        .slide-container {
+            flex: 1;
+            padding: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .slide-card {
+            background: var(--card-glass);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 2px solid white;
+            box-shadow: var(--shadow);
+            border-radius: var(--radius);
+            width: 100%;
+            max-width: 1100px;
+            min-height: 650px;
+            padding: 50px;
+            display: none;
+            flex-direction: column;
+            justify-content: flex-start;
+            position: relative;
+            animation: slideUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        .slide-card.active {
+            display: flex;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Dynamic Theme Layout Components */
+        .slide-header {
+            margin-bottom: 35px;
+            border-bottom: 4px solid var(--primary-yellow);
+            padding-bottom: 15px;
+            display: inline-block;
+        }
+
+        .slide-title {
+            font-size: 36px;
+            color: var(--primary-teal);
+            line-height: 1.2;
+        }
+
+        /* Two Column Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            align-items: start;
+        }
+
+        .full-width {
+            grid-template-columns: 1fr;
+        }
+
+        /* Cheerful Custom Dashboard Blocks */
+        .info-card {
+            background: white;
+            padding: 24px;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+            border-left: 6px solid var(--primary-teal);
+            border-top: 1px solid var(--primary-teal);
+            border-right: 1px solid var(--primary-teal);
+            border-bottom: 1px solid var(--primary-teal);
+            transition: transform 0.3s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .info-card.alert-type {
+            border-left-color: var(--accent-orange);
+        }
+
+        .info-card h3 {
+            font-size: 20px;
+            color: var(--text-dark);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-card p,
+        .info-card li {
+            font-size: 20px;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .info-card ul {
+            list-style-type: none;
+            padding-left: 5px;
+        }
+
+        .info-card li {
+            margin-bottom: 10px;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .info-card li::before {
+            content: "✨";
+            position: absolute;
+            left: 0;
+            top: 1px;
+        }
+
+        /* Quick Stat Highlights */
+        .stat-bar {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .stat-badge {
+            background: var(--primary-teal);
+            color: white;
+            padding: 10px 18px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .stat-badge.yellow {
+            background: var(--primary-yellow);
+            color: var(--text-dark);
+        }
+
+        /* Navigation Buttons Bottom Right */
+        .controls-layer {
+            position: absolute;
+            bottom: 40px;
+            right: 40px;
+            display: flex;
+            gap: 15px;
+        }
+
+        .control-btn {
+            background: white;
+            border: 2px solid var(--primary-teal);
+            color: var(--primary-teal);
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .control-btn:hover {
+            background: var(--primary-teal);
+            color: white;
+        }
+
+        /* Custom Reference & Quote Boxes */
+        .interview-evidence {
+            background: #FFFCEB;
+            border: 1px dashed var(--accent-orange);
+            padding: 15px;
+            border-radius: 12px;
+            margin-top: 15px;
+            font-style: italic;
+            font-size: 14px !important;
+            color: #A0522D !important;
+        }
+
+        .academic-ref {
+            display: block;
+            margin-top: 12px;
+            font-size: 12px !important;
+            color: #95A5A6 !important;
+            font-weight: 600;
+        }
+
+        /* Responsive UI Optimization */
+        @media (max-width: 1024px) {
+            .presentation-wrapper {
+                flex-direction: column;
+            }
+
+            .sidebar-nav {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+
+            .slide-container {
+                padding: 20px;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="presentation-wrapper">
+
+        <aside class="sidebar-nav" style="display: none;">
+            <div class="brand-zone">
+                <h2>☀️ Mental Care</h2>
+                <div class="brand-subtitle">Practice Analysis</div>
+            </div>
+            <button class="nav-item active" onclick="goToSlide(0)">🏠 1. Cover & Overview</button>
+            <button class="nav-item" onclick="goToSlide(1)">🏢 2. Setting & Services</button>
+            <button class="nav-item" onclick="goToSlide(2)">👥 3. Counselor Roles</button>
+            <button class="nav-item" onclick="goToSlide(3)">🌱 4. Helping Concepts</button>
+            <button class="nav-item" onclick="goToSlide(4)">⚖️ 5. Ethical Issues</button>
+            <button class="nav-item" onclick="goToSlide(5)">⚠️ 6. Challenges Faced</button>
+            <button class="nav-item" onclick="goToSlide(6)">🚀 7. Recommendations</button>
+            <button class="nav-item" onclick="goToSlide(7)">📚 8. References</button>
+        </aside>
+
+        <main class="slide-container">
+
+            <section class="slide-card active">
+                <div class="slide-header">
+                    <span
+                        style="text-transform: uppercase; font-weight:700; color:var(--accent-orange); letter-spacing:1px;">Master
+                        of Counselling Presentation:CPE5000</span>
+                    <h1 class="slide-title" style="font-size: 44px; margin-top: 10px;">Presentation on Counselling
+                        Service
+                        Analysis through Professional Interview</h1>
+                </div>
+                <div class="" style="margin-top: 20px;">
+                    <div class="info-card" style="width: 100%;">
+                        <h3>📊 Operational Setting Analyzed</h3>
+                        <p><strong>Centre Name:</strong> "The Mental Hour Care" (Private Mental Health Practice) <br>
+                            <strong>Interviewee:</strong> Encik Syafiq (Senior In-House Counselor) <br>
+                            <strong>Target Audience:</strong> Children, teenagers, adults, up to geriatric
+                            patients.
+                        </p>
+                    </div>
+                    <!-- <div class="info-card" style="background: var(--primary-teal); color: white;">
+                        <h3 style="color: white;">💡 My Student Profile</h3>
+                        <p style="color: rgba(255,255,255,0.9);"><strong>Background:</strong> Software Engineer <br>
+                            <strong>Degree:</strong> Computer Science [cite: 1593]<br>
+                            <strong>Current Track:</strong> Master of Counseling [cite: 1597]<br>
+                            <em>"Bringing tech logic and system maps into human-centered counseling spaces!"</em>
+                        </p>
+                    </div> -->
+                </div>
+                <div class="controls-layer">
+                    <button class="control-btn" onclick="nextSlide()">Next Slide ➡️</button>
+                </div>
+            </section>
+
+            <section class="slide-card">
+                <div class="slide-header">
+                    <h2 class="slide-title">🏢 1. Operational Setting & Services Analysis</h2>
+                </div>
+                <div class="stat-bar">
+                    <div class="stat-badge">📊 150 - 180 Sessions / Month</div>
+                    <div class="stat-badge yellow">👥 70% Face-to-Face</div>
+                    <div class="stat-badge">🌐 30% Online Video</div>
+                </div>
+                <div class="content-grid">
+                    <div class="info-card">
+                        <h3>🏫 Private Practice vs. Schools</h3>
+                        <p>Unlike schools or public universities where counselors do endless administrative or paperwork
+                            tasks, private clinics allow counselors to focus heavily on clinical therapeutic
+                            sessions with clients.</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>🌍 Broad Demographic Scope</h3>
+                        <p>The clinic treats individuals of all age groups. Encik Syafiq highlighted that
+                            their oldest client was an 84-year-old suffering from geriatric loneliness, demonstrating an
+                            expansive, community-wide reach.</p>
+                        <div class="interview-evidence">"Dulu kita pernah klien kita paling tua 84 tahun... isu adalah
+                            just loneliness."</div>
+                    </div>
+                </div>
+                <div class="controls-layer">
+                    <button class="control-btn" onclick="prevSlide()">⬅️ Back</button>
+                    <button class="control-btn" onclick="nextSlide()">Next ➡️</button>
+                </div>
+            </section>
+
+            <section class="slide-card">
+                <div class="slide-header">
+                    <h2 class="slide-title">👥 2. Multi-Dimensional Counselor Roles</h2>
+                </div>
+                <div class="content-grid">
+                    <div class="info-card">
+                        <h3>🛠️ The Hybrid Counselor Matrix</h3>
+                        <p>In a modern private clinic, a counselor cannot live purely inside a clinical room.
+                            Counselors must act like agile systems to handle market forces:</p>
+                        <ul style="margin-top: 10px;">
+                            <li><strong>Clinical Therapist:</strong> Running face-to-face and online sessions.</li>
+                            <li><strong>Marketer & Content Creator:</strong> Going live on TikTok daily from 10:30 AM to
+                                12:00 PM to build real-time audience engagement.</li>
+                            <li><strong>Business Specialist:</strong> Managing incoming inquiries and working closely
+                                with corporate B2B pipelines.</li>
+                        </ul>
+                    </div>
+                    <div class="info-card alert-type">
+                        <h3>💡 The Clinical Workforce Scale</h3>
+                        <p>The firm runs on an organized combination of in-house and on-demand professional assets:</p>
+                        <ul style="margin-top: 10px;">
+                            <li><strong>2 In-House Senior Counselors:</strong> Managing full clinical paths.
+                            </li>
+                            <li><strong>2 Trainee Counselors:</strong> Masters and undergrad level interns.
+                            </li>
+                            <li><strong>6 Locum Counselors & 8 Locum Psychologists:</strong> External specialists called
+                                in based on system bookings.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="controls-layer">
+                    <button class="control-btn" onclick="prevSlide()">⬅️ Back</button>
+                    <button class="control-btn" onclick="nextSlide()">Next ➡️</button>
+                </div>
+            </section>
+
+            <section class="slide-card">
+                <div class="slide-header">
+                    <h2 class="slide-title">🌱 3. Theoretical Framework Integration</h2>
+                </div>
+                <div class="content-grid">
+                    <div class="info-card">
+                        <h3>🤝 Client-Centered Therapy (Carl Rogers)</h3>
+                        <p>Encik Syafiq favors Rogerian therapy to offer <strong>Unconditional Positive
+                                Regard</strong>. It lets clients vent completely without fear of societal
+                            judgment, helping them achieve inner insight (<em>"celik akal"</em>).</p>
+                        <div class="interview-evidence">"You just tanya apa yang klien perlukan and client vent... kita
+                            bagi peluang untuk klien rasa yang dia value dia punya perasaan." </div>
+                        <span class="academic-ref">(Rogers, 1957)</span>
+                    </div>
+                    <div class="info-card">
+                        <h3>📐 Cognitive Behavioral Therapy (CBT)</h3>
+                        <p>Because Client-Centered therapy can lack explicit directions or structure for formal reports
+                            , CBT is added to provide explicit architecture. This helps
+                            structure thoughts, behavior charts, and weekly homework assignments.</p>
+                        <span class="academic-ref">(Corey, 2021)</span>
+                    </div>
+                </div>
+                <div class="controls-layer">
+                    <button class="control-btn" onclick="prevSlide()">⬅️ Back</button>
+                    <button class="control-btn" onclick="nextSlide()">Next ➡️</button>
+                </div>
+            </section>
+
+            <section class="slide-card">
+                <div class="slide-header">
+                    <h2 class="slide-title">⚖️ 4. Critical Ethical Considerations</h2>
+                </div>
+                <div class="content-grid">
+                    <div class="info-card alert-type">
+                        <h3>🏘️ Public Encounters & Dual Relationships</h3>
+                        <p><strong>The Reality:</strong> Encountering clients unexpectedly in public spaces.
+                            Syafiq discovered that a married couple he was counseling for intense marital conflict lived
+                            right next door to him!</p>
+                        <p style="margin-top: 10px;"><strong>Ethical Protocol:</strong> Protect client autonomy. Never
+                            greet or acknowledge the client first in public. If the client says
+                            hello first, keep it brief, and discuss the public interaction openly in the next formal
+                            session.</p>
+                        <!-- <span class="academic-ref">(ACA Code of Ethics, 2014 - Section A.6)</span> -->
+                    </div>
+                    <div class="info-card">
+                        <h3>🔒 Boundaries of Confidentiality</h3>
+                        <p>When reporting clinical summaries to parents or third parties, restrict information to
+                            generalized overviews of psychological discomfort. Walled-off case details can
+                            only be provided under explicit court orders or legal discovery actions.</p>
+                        <!-- <span class="academic-ref">(Lembaga Kaunselor Malaysia, 2011)</span> -->
+                    </div>
+                </div>
+                <div class="controls-layer">
+                    <button class="control-btn" onclick="prevSlide()">⬅️ Back</button>
+                    <button class="control-btn" onclick="nextSlide()">Next ➡️</button>
+                </div>
+            </section>
+
+            <section class="slide-card">
+                <div class="slide-header">
+                    <h2 class="slide-title">⚠️ 5. Current Challenges in Practice</h2>
+                </div>
+                <div class="content-grid">
+                    <div class="info-card alert-type">
+                        <h3>🔥 Countertransference & Burnout</h3>
+                        <p>Syafiq candidly shared an instance where a massive personal argument left him emotionally raw
+                            right before starting a session with a
+                            client. Managing 150-180 sessions a month leaves counselors vulnerable to severe
+                            compassion fatigue.</p>
+                    </div>
+                    <div class="info-card alert-type">
+                        <h3>🕒 Admin Overhead & System Confusion</h3>
+                        <p>Even though the practice focuses heavily on clinical sessions, a huge volume of client
+                            inquiries creates confusion. Incoming clients frequently lack awareness of
+                            psychological roles, showing a clear need for automated intake triage platforms.</p>
+                        <div class="interview-evidence">"Inquiry client... macam oh saya nak book session saya tak tahu
+                            nak book yang mana satu saya nak kaunselor ke clinical psychologist."
+                        </div>
+                    </div>
+                </div>
+                <div class="controls-layer">
+                    <button class="control-btn" onclick="prevSlide()">⬅️ Back</button>
+                    <button class="control-btn" onclick="nextSlide()">Next ➡️</button>
+                </div>
+            </section>
+
+            <section class="slide-card">
+                <div class="slide-header">
+                    <h2 class="slide-title">🚀 6. Actionable System Recommendations</h2>
+                </div>
+                <div class="content-grid">
+                    <div class="info-card" style="border-left-color: var(--accent-orange);">
+                        <h3>💻 Automated Intake Triage Tool</h3>
+                        <p><strong>The Fix:</strong> Build an interactive, algorithmic web form that asks clients basic
+                            questions before booking. This automatically routes them to either a Licensed Counselor or a
+                            Clinical Psychologist based on risk level, taking the administrative burden off staff.</p>
+                    </div>
+                    <div class="info-card" style="border-left-color: var(--primary-teal);">
+                        <h3>📅 Structured Peer Supervision Blocks</h3>
+                        <p><strong>The Fix:</strong> Set up mandatory, systemic safeguards for counselors to prevent
+                            compassion fatigue. Build an automated schedule into the clinic's internal system
+                            that blocks out peer supervision sessions and self-care gaps after intense trauma cases.</p>
+                    </div>
+                </div>
+                <div class="controls-layer">
+                    <button class="control-btn" onclick="prevSlide()">⬅️ Back</button>
+                    <button class="control-btn" onclick="nextSlide()">Next ➡️</button>
+                </div>
+            </section>
+
+            <section class="slide-card">
+                <div class="slide-header">
+                    <h2 class="slide-title">📚 Academic References & Evidence</h2>
+                </div>
+                <div class="info-card full-width" style="border-left-color: var(--primary-yellow);">
+                    <p style="font-size: 14px; line-height: 2; margin-bottom: 0; color: var(--text-dark);">
+                        <!-- • American Counseling Association. (2014). <em>ACA code of ethics</em>. Alexandria, VA:
+                        Author.<br>
+                        • Corey, G. (2021). <em>Theory and practice of counseling and psychotherapy</em> (10th ed.).
+                        Cengage Learning.<br>
+                        • Lembaga Kaunselor Malaysia. (2011). <em>Kod etika kelakuan kaunselor</em>. Kuala Lumpur:
+                        Kementerian Pembangunan Wanita, Keluarga dan Masyarakat.<br>
+                        • Rogers, C. R. (1957). The necessary and sufficient conditions of therapeutic personality
+                        change. <em>Journal of Consulting Psychology</em>, 21(2), 95-103.<br> -->
+                        • Syafiq, E. (2026). <em>Personal interview on private mental health practice operations and
+                            counselor roles</em>. [Conducted at Tamarind Square].
+                    </p>
+                </div>
+                <div class="info-card full-width" style="border-left-color: var(--primary-yellow);">
+                    <img src="/IMG_1316.jpg" alt="A descriptive sentence about the image">
+
+                </div>
+                <div class="controls-layer">
+                    <button class="control-btn" onclick="prevSlide()">⬅️ Back</button>
+                    <button class="control-btn" style="background:var(--primary-teal); color:white;"
+                        onclick="goToSlide(0)">Restart 🔄</button>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        let currentSlideIndex = 0;
+        const slides = document.querySelectorAll('.slide-card');
+        const navItems = document.querySelectorAll('.nav-item');
+
+        function showSlide(index) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            navItems.forEach(item => item.classList.remove('active'));
+
+            slides[index].classList.add('active');
+            navItems[index].classList.add('active');
+            currentSlideIndex = index;
+        }
+
+        function nextSlide() {
+            if (currentSlideIndex < slides.length - 1) {
+                showSlide(currentSlideIndex + 1);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlideIndex > 0) {
+                showSlide(currentSlideIndex - 1);
+            }
+        }
+
+        function goToSlide(index) {
+            showSlide(index);
+        }
+
+        // Keyboard Arrow Keys Navigation Listener
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'ArrowRight') {
+                nextSlide();
+            } else if (event.key === 'ArrowLeft') {
+                prevSlide();
+            }
+        });
+    </script>
+
+</body>
+
+</html>
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mental Care Practice Analysis</title>
+    <title>Counseling Services & Operational Analysis Presentation</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/dracula.min.css">
-    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Arial:wght=700&family=Calibri:ital,wght=0,400;0,700;1,400&display=swap');
+
+        /* Global Theme Foundation */
+        .reveal {
+            font-family: "Calibri", sans-serif;
+            font-size: 32px;
+            font-weight: normal;
+            color: #0f172a;
+            /* Slate 900 for absolute high contrast read */
+        }
+
+        /* Clear UI Pure White Canvas Override */
+        .reveal .slide-background {
+            background-color: #ffffff !important;
+        }
+
+        /* Enforce theme defaults across elements */
+        .reveal h1,
+        .reveal h2,
+        .reveal h3,
+        .reveal h4 {
+            font-family: "Arial", sans-serif;
+            font-weight: 700;
+            text-transform: none;
+            line-height: 1.2;
+            letter-spacing: normal;
+        }
+
+        .reveal h1 {
+            font-size: 2.0em;
+            color: #0f172a;
+            text-transform: uppercase;
+        }
+
+        .reveal h2 {
+            font-size: 1.5em;
+            color: #1e3a8a;
+            /* Deep Royal Clinical Blue */
+            margin-bottom: 0.2em;
+        }
+
+        .reveal h3 {
+            font-size: 1.1em;
+            color: #0e7494;
+            /* Professional Teal Accent */
+            margin-top: 0.4em;
+            margin-bottom: 0.2em;
+        }
+
+        .reveal .subtitle {
+            font-size: 0.65em;
+            color: #475569;
+            /* Slate 600 */
+            font-weight: normal;
+            margin-bottom: 1.2em;
+        }
+
+        .reveal .accent-mint {
+            color: #059669 !important;
+            /* Emerald 600 - Readable on White */
+            font-weight: bold;
+        }
+
+        .reveal em {
+            font-style: italic;
+            color: #0e7494;
+        }
+
+        /* Layout Framework Blocks */
+        .reveal .container {
+            display: flex;
+            gap: 30px;
+            text-align: left;
+            align-items: stretch;
+            margin-top: 10px;
+        }
+
+        .reveal .col {
+            flex: 1;
+        }
+
+        /* Component Cards */
+        .reveal .card-gray {
+            background-color: #f1f5f9;
+            /* Slate 100 */
+            padding: 25px;
+            border-radius: 6px;
+            border: 1px solid #cbd5e1;
+            box-sizing: border-box;
+        }
+
+        .reveal .card-light-gray {
+            background-color: #f8fafc;
+            /* Slate 50 */
+            padding: 25px;
+            border: 2px dashed #94a3b8;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+
+        .reveal .card-dark {
+            background-color: #f0fdfa;
+            /* Converted to Clear Mint Tint 50 */
+            color: #0f172a;
+            padding: 30px;
+            border: 2px solid #0d9488;
+            /* Teal border frame */
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+
+        .reveal .card-dark p {
+            color: #334155 !important;
+        }
+
+        .reveal .card-alert {
+            background-color: #fff5f5;
+            /* Soft Red Warning Canvas */
+            border: 2px solid #ef4444;
+            padding: 30px;
+            border-radius: 6px;
+            text-align: left;
+            box-sizing: border-box;
+        }
+
+        .reveal .card-alert h3 {
+            color: #991b1b !important;
+            margin-top: 0;
+        }
+
+        /* Large Statistical Metrics */
+        .reveal .metric-large {
+            font-family: "Arial", sans-serif;
+            font-size: 2.2em;
+            font-weight: bold;
+            color: #0e7494;
+            line-height: 1;
+            margin: 5px 0;
+        }
+
+        .reveal .card-dark .metric-large {
+            color: #0d9488;
+        }
+
+        /* Lists & Bullet Adjustments */
+        .reveal ul {
+            display: block;
+            margin: 0 0 0 1em;
+        }
+
+        .reveal li {
+            font-size: 0.75em;
+            line-height: 1.35;
+            color: #0f172a;
+            margin-bottom: 10px;
+        }
+
+        /* Monospaced System Flow Diagram Styling */
+        .reveal .architecture-flow {
+            font-family: "Consolas", "Courier New", monospace;
+            font-size: 0.5em;
+            line-height: 1.25;
+            color: #0f172a;
+            background: #f8fafc;
+            padding: 20px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            white-space: pre;
+            text-align: left;
+        }
+
+        /* Interactive Elements Overrides */
+        .reveal .progress {
+            color: #0d9488;
+            background: #e2e8f0;
+        }
+
+        .reveal .controls {
+            color: #0e7494;
+        }
+    </style>
 </head>
 
 <body>
@@ -16,23 +848,310 @@
     <div class="reveal">
         <div class="slides">
 
-            <section data-markdown>
-                <textarea data-template>
-## 🚀 Professional Counseling Analysis
-### Private Mental Health Practice Evaluation
-
-**Setting:** Mental Care Clinic  
-**Presenter:** Encik Syafiq  
-            </textarea>
+            <section>
+                <div style="margin-top: 10%;">
+                    <h1>Counseling Services & Operational Analysis</h1>
+                    <p class="accent-mint" style="font-size: 0.85em; margin-top: 20px;">
+                        An Institutional & Clinical Evaluation of 'Mental Care' Private Practice
+                    </p>
+                    <hr style="border: none; border-top: 1px solid #cbd5e1; width: 60%; margin: 40px auto;">
+                    <p style="font-size: 0.6em; color: #475569;">
+                        Prepared by: Software Engineer & Master of Counseling Candidate
+                    </p>
+                </div>
             </section>
 
             <section>
-                <h2>Slide 2 Example</h2>
-                <p>This is working Reveal.js + Firebase control</p>
+                <h2>1.1 Institutional Context & Scale</h2>
+                <div class="subtitle">Comparing operational landscapes and systemic demands</div>
+
+                <div class="container">
+                    <div class="col">
+                        <h3>Public vs. Private Frameworks</h3>
+                        <ul>
+                            <li><strong>University/School Settings:</strong> Encumbered by heavy administrative
+                                overhead, bureaucratic institutional protocols, and rigid internal reporting tracks.
+                            </li>
+                            <li><strong>Private Practice ('Mental Care'):</strong> An entrepreneurial model shifting
+                                primary focus straight to client clinical session hours.</li>
+                        </ul>
+                    </div>
+
+                    <div class="col card-gray">
+                        <h3>Operational Volume</h3>
+                        <div class="metric-large">150 - 180</div>
+                        <p style="margin: 5px 0;"><strong>Sessions Managed Per Month</strong> </p>
+                        <p style="font-size: 0.65em; color: #475569; margin-top: 10px;">
+                            Growth and scalability are actively sustained by targeted digital marketing tracks and
+                            modern SEO optimizations.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2>1.2 Target Client Demographics</h2>
+                <div class="subtitle">Categorizing the primary user-base accessing community care</div>
+
+                <div class="container">
+                    <div class="col card-dark">
+                        <h3>Primary Demographics</h3>
+                        <div class="metric-large">80%</div>
+                        <p style="font-size: 0.75em; font-weight: bold;">Working Adults & Corporate Professionals </p>
+                        <hr style="border: none; border-top: 1px solid #0d9488; margin: 15px 0;">
+                        <h3>Secondary Segments</h3>
+                        <p style="font-size: 0.7em; line-height: 1.3;">Children, adolescents, and local university
+                            students presenting non-academic psychological needs.</p>
+                    </div>
+
+                    <div class="col">
+                        <h3>Core Clinical Presentations</h3>
+                        <ul>
+                            <li><strong>Mood & Affective Conditions:</strong> High rates of generalized anxiety and
+                                depressive episodes.</li>
+                            <li><strong>Relational & Stress Stressors:</strong> Severe work-related burnout, marital
+                                discord, and interpersonal family conflicts.</li>
+                            <li><strong>Financial Limitations:</strong> Lower presentation rates from low-income
+                                communities due to out-of-pocket private fees.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2>2.1 Core Counseling Modalities</h2>
+                <div class="subtitle">Evidence-based interventions applied across regular sessions</div>
+
+                <div class="container">
+                    <div class="col card-gray">
+                        <h3>Cognitive Behavioral Therapy (CBT)</h3>
+                        <p style="font-size: 0.7em; line-height: 1.4;">
+                            The main structure for active symptom reduction. Focuses on identifying unhelpful cognitive
+                            distortions and modifying behavioral patterns through practical homework exercises.
+                        </p>
+                    </div>
+                    <div class="col card-light-gray">
+                        <h3>Humanistic / Person-Centered</h3>
+                        <p style="font-size: 0.7em; line-height: 1.4;">
+                            Based on Carl Rogers' framework. Prioritizes establishing unconditional positive regard,
+                            deep empathy, and absolute congruence to create a safe therapeutic alliance.
+                        </p>
+                    </div>
+                </div>
+                <div style="margin-top: 25px; font-size: 0.65em; text-align: left; padding-left: 10px;">
+                    💡 <strong>Clinical Integration:</strong> Counselors use humanistic principles to build a strong
+                    initial bond, then transition to structured CBT techniques to build actionable coping mechanisms.
+                </div>
+            </section>
+
+            <section>
+                <h2>2.2 Specialized Clinical Services</h2>
+                <div class="subtitle">Exploring niche focus areas, developmental limitations, and emerging therapies
+                </div>
+
+                <ul>
+                    <li><strong>Play Therapy:</strong> A dedicated, tool-based service for child clients to express
+                        internal emotional conflicts when verbal articulation is limited.</li>
+                    <li><strong>Hypnotherapy:</strong> An emerging specialty used by clinical staff to target
+                        subconscious behavioral patterns and deeper somatic anxieties.</li>
+                    <li><strong>Niche Modality Limitations (e.g., Equine Therapy):</strong> Not viable for this urban
+                        private practice due to space requirements and significant capital infrastructure overhead.</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>3.1 Dual Practitioner Roles</h2>
+                <div class="subtitle">The reality of managing clinical caseloads alongside business tasks</div>
+
+                <div class="container">
+                    <div class="col">
+                        <h3>Clinical Responsibilities</h3>
+                        <ul>
+                            <li><strong>Case Management:</strong> Executing comprehensive intakes, building mental
+                                health goals, and running 60-minute therapy sessions.</li>
+                            <li><strong>Multi-tier Triaging:</strong> Correctly identifying and separating mild cases
+                                for counselors from severe pathologies needing a Clinical Psychologist.</li>
+                        </ul>
+                    </div>
+                    <div class="col card-dark">
+                        <h3>Operational & Marketing Duties</h3>
+                        <ul>
+                            <li><strong>Daily Public Live Broadcasts:</strong> Conducting 1.5-hour TikTok live sessions
+                                (10:30 AM - 12:00 PM) to drive local client lead generation.</li>
+                            <li><strong>Content Engine:</strong> Directing graphic layout designs and short-form video
+                                production with help from university interns.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2>4.1 Boundary Violations vs. Extensions</h2>
+                <div class="subtitle">Ethical navigation of counselor actions within community spaces</div>
+
+                <div class="card-light-gray" style="text-align: left; margin-bottom: 20px;">
+                    <p style="font-size: 0.75em; margin: 0;">
+                        <strong>Boundary Extension (Ethical & Clean):</strong> Going live on public media platforms to
+                        talk about mental health trends. This educates the community, reduces stigma, and builds public
+                        trust without compromising individual client records.
+                    </p>
+                </div>
+
+                <div class="card-alert">
+                    <h3>Boundary Violation (Severe Risk Blockers)</h3>
+                    <p style="font-size: 0.7em; margin: 0; line-height: 1.4;">
+                        Interacting directly with current or past clients in public live stream chat comments, answering
+                        highly specific personal case questions on air, or using real clinical case files as promotional
+                        content. This directly violates confidentiality standards under the <em>Lembaga Kaunselor
+                            Malaysia Code of Ethics</em>.
+                    </p>
+                </div>
+            </section>
+
+            <section>
+                <h2>4.2 Ethical Challenges: Public Encounters</h2>
+                <div class="subtitle">Managing accidental dual relationships in localized social environments</div>
+
+                <div class="container">
+                    <div class="col">
+                        <h3>The Local Scenario</h3>
+                        <p style="font-size: 0.7em; line-height: 1.4;">
+                            Urban practices in close proximity to lifestyle hubs (e.g., Tamarind Square) run an ongoing
+                            risk of counselors accidentally bumping into current clients in public spaces like cafes or
+                            restaurants.
+                        </p>
+                    </div>
+                    <div class="col card-gray">
+                        <h3>Mandatory Proactive Framework</h3>
+                        <ul>
+                            <li><strong>Pre-emptive Briefing:</strong> Counselors must explicitly cover public
+                                accidental encounters during the initial intake/informed consent process.</li>
+                            <li><strong>Client-Led Control:</strong> The counselor will completely ignore the client in
+                                public *unless* the client initiates contact, protecting the client's privacy.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2>5.1 Systemic Challenges: Burnout & Scope</h2>
+                <div class="subtitle">Analyzing key operational bottlenecks within the practice</div>
+
+                <div class="container">
+                    <div class="col card-alert">
+                        <h3>1. High Caseload Burnout</h3>
+                        <p style="font-size: 0.65em; line-height: 1.3;">
+                            Managing a continuous stream of high-volume client hours alongside daily content creation
+                            cycles creates heavy emotional fatigue and exhaustion.
+                        </p>
+                    </div>
+                    <div class="col card-alert">
+                        <h3>2. Scope-of-Practice Creep</h3>
+                        <p style="font-size: 0.65em; line-height: 1.3;">
+                            Practitioners run the risk of inadvertently attempting to treat complex clinical personality
+                            disorders or severe psychologies that belong with clinical psychologists or psychiatrists.
+                        </p>
+                    </div>
+                    <div class="col card-alert">
+                        <h3>3. Manual Administration</h3>
+                        <p style="font-size: 0.65em; line-height: 1.3;">
+                            Using unoptimized channels (like manual WhatsApp text chats) to handle complex intake
+                            queries, booking modifications, and triage sorting.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2>5.2 Automated Triage & Follow-Up System</h2>
+                <div class="subtitle">Replacing manual WhatsApp steps with an engineered software pipeline</div>
+
+                <div class="architecture-flow">[Client Landing/TikTok Link]
+                    │
+                    ▼
+                    [Automated Typeform Intake] ──► (Algorithm checks severity scores)
+                    │
+                    ├─► High Severity (DASS-21 Red) ──► Route to Clinical Psychologist
+                    │
+                    └─► Standard Stress/Anxiety ──► Route to Registered Counselor
+                    │
+                    ▼
+                    [Stripe Payment API Integrated Checkout]
+                    │
+                    ▼
+                    [Automated Twilio/WhatsApp Reminder Trigger] + [Between-Session Digital Homework Tracking App]</div>
+            </section>
+
+            <section>
+                <h2>5.3 Automation Value Matrix</h2>
+                <div class="subtitle">How technology directly saves clinical time and prevents counselor burnout</div>
+
+                <div class="container">
+                    <div class="col card-gray">
+                        <h3>Operational Efficiency</h3>
+                        <ul>
+                            <li><strong>Zero Manual Triage:</strong> Algorithmic sorting completely handles the initial
+                                intake, letting interns focus entirely on core marketing tasks.</li>
+                            <li><strong>Reduced No-Shows:</strong> Automated reminders keep schedule slots secure
+                                without manual tracking.</li>
+                        </ul>
+                    </div>
+                    <div class="col card-dark">
+                        <h3>Improved Clinical Delivery</h3>
+                        <ul>
+                            <li><strong>Pre-Session Insights:</strong> Counselors can quickly scan digital homework logs
+                                right before the session begins, saving valuable time.</li>
+                            <li><strong>Stronger Engagement:</strong> Gives clients structured, between-session
+                                accountability tools to keep them active in their therapy goals.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div style="margin-top: 5%;">
+                    <h1>Conclusion & Key Summary</h1>
+                    <p class="accent-mint" style="font-size: 0.8em; margin-top: 20px;">
+                        Balancing Community Marketing with Secure Ethical Boundaries
+                    </p>
+                    <div
+                        style="text-align: left; max-width: 80%; margin: 30px auto; font-size: 0.7em; line-height: 1.4; color: #475569;">
+                        <ul>
+                            <li>The 'Mental Care' private model shows how modern social media can drive scale (150-180
+                                sessions/month), but requires careful clinical boundaries to protect client
+                                confidentiality.</li>
+                            <li>Integrating humanistic theory with structured CBT ensures clear, goal-driven clinical
+                                care.</li>
+                            <li>By deploying automated intake architectures, the practice can eliminate administrative
+                                friction, protect staff from burnout, and elevate community mental health operations.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </section>
 
         </div>
     </div>
+
+    <script href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.js"></script>
+    <script>
+        // Import Reveal dynamically to ensure clean external script initialization 
+        var script = document.createElement('script');
+        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.js';
+        script.onload = function () {
+            Reveal.initialize({
+                hash: true,
+                center: true,
+                controls: true,
+                progress: true,
+                transition: 'slide', // Clean corporate side-to-side shift
+                width: 1100,
+                height: 700,
+                margin: 0.1
+            });
+        };
+        document.head.appendChild(script);
+    </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/plugin/markdown/markdown.min.js"></script>
@@ -76,4 +1195,4 @@
 
 </body>
 
-</html>
+</html> -->
