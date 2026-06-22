@@ -11,6 +11,10 @@
         href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Quicksand:wght@400;600;700&display=swap"
         rel="stylesheet">
 
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-database-compat.js"></script>
+
     <style>
         :root {
             --bg-gradient: linear-gradient(135deg, #FFFDEB 0%, #E6F7F4 100%);
@@ -626,53 +630,44 @@
     </div>
 
     <script>
+        /* ================= FIREBASE SETUP ================= */
+        const firebaseConfig = {
+            apiKey: "AIzaSyAHbM5DMVwyoZQWczJ8D3QtYawHBEOex64",
+            authDomain: "slide-remote-129b8.firebaseapp.com",
+            databaseURL: "https://slide-remote-129b8-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "slide-remote-129b8",
+            storageBucket: "slide-remote-129b8.firebasestorage.app",
+            messagingSenderId: "789464647586",
+            appId: "1:789464647586:web:dce9d5b14c35fa225a54fb",
+            measurementId: "G-Q0PTYBDRX7"
+        };
 
-        /* =========================================
-   📡 UNIVERSAL REMOTE (OLD PC FRIENDLY)
-   Works via localStorage polling
-========================================= */
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+        const slideRef = db.ref("presentation/currentSlide");
 
-        function sendRemote(action) {
-            localStorage.setItem("slide_remote_action", JSON.stringify({
-                action,
-                time: Date.now()
-            }));
-        }
-
-        // Listen for remote commands every 300ms
-        setInterval(() => {
-            const data = localStorage.getItem("slide_remote_action");
-            if (!data) return;
-
-            const msg = JSON.parse(data);
-
-            // prevent repeated triggers
-            if (window.lastRemoteTime === msg.time) return;
-            window.lastRemoteTime = msg.time;
-
-            if (msg.action === "next") nextSlide();
-            if (msg.action === "prev") prevSlide();
-
-            if (typeof msg.action === "number") {
-                goToSlide(msg.action);
-            }
-
-        }, 300);
-
-        console.log("📡 Remote sync active");
         let currentSlideIndex = 0;
+        let isRemoteUpdate = false;
+
         const slides = document.querySelectorAll('.slide-card');
-        const navItems = document.querySelectorAll('.nav-item');
 
-        function showSlide(index) {
-            slides.forEach(slide => slide.classList.remove('active'));
-            navItems.forEach(item => item.classList.remove('active'));
+        /* ================= SHOW SLIDE ================= */
+        function showSlide(index, fromRemote = false) {
 
+            if (index < 0 || index >= slides.length) return;
+
+            slides.forEach(s => s.classList.remove('active'));
             slides[index].classList.add('active');
-            navItems[index].classList.add('active');
+
             currentSlideIndex = index;
+
+            // prevent infinite loop when receiving Firebase update
+            if (!fromRemote) {
+                slideRef.set(index);
+            }
         }
 
+        /* ================= NAVIGATION ================= */
         function nextSlide() {
             if (currentSlideIndex < slides.length - 1) {
                 showSlide(currentSlideIndex + 1);
@@ -685,17 +680,19 @@
             }
         }
 
-        function goToSlide(index) {
-            showSlide(index);
-        }
+        /* ================= RECEIVE REMOTE UPDATES ================= */
+        slideRef.on("value", (snap) => {
+            const val = snap.val();
 
-        // Keyboard Arrow Keys Navigation Listener
-        document.addEventListener('keydown', function (event) {
-            if (event.key === 'ArrowRight') {
-                nextSlide();
-            } else if (event.key === 'ArrowLeft') {
-                prevSlide();
+            if (val !== null && val !== currentSlideIndex) {
+                showSlide(val, true); // remote update
             }
+        });
+
+        /* ================= KEYBOARD CONTROL ================= */
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'ArrowRight') nextSlide();
+            if (event.key === 'ArrowLeft') prevSlide();
         });
     </script>
 
