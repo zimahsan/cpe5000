@@ -403,7 +403,7 @@
                 <div class="stat-bar">
                     <div class="stat-badge">📊 150 - 180 Sessions / Month</div>
                     <div class="stat-badge yellow">👥 70% Face-to-Face</div>
-                    <div class="stat-badge">🌐 30% Online Video</div>
+                    <div class="stat-badge">🌐 30% Online</div>
                 </div>
                 <div class="content-grid">
                     <div class="info-card">
@@ -626,6 +626,40 @@
     </div>
 
     <script>
+
+        /* =========================================
+   📡 UNIVERSAL REMOTE (OLD PC FRIENDLY)
+   Works via localStorage polling
+========================================= */
+
+        function sendRemote(action) {
+            localStorage.setItem("slide_remote_action", JSON.stringify({
+                action,
+                time: Date.now()
+            }));
+        }
+
+        // Listen for remote commands every 300ms
+        setInterval(() => {
+            const data = localStorage.getItem("slide_remote_action");
+            if (!data) return;
+
+            const msg = JSON.parse(data);
+
+            // prevent repeated triggers
+            if (window.lastRemoteTime === msg.time) return;
+            window.lastRemoteTime = msg.time;
+
+            if (msg.action === "next") nextSlide();
+            if (msg.action === "prev") prevSlide();
+
+            if (typeof msg.action === "number") {
+                goToSlide(msg.action);
+            }
+
+        }, 300);
+
+        console.log("📡 Remote sync active");
         let currentSlideIndex = 0;
         const slides = document.querySelectorAll('.slide-card');
         const navItems = document.querySelectorAll('.nav-item');

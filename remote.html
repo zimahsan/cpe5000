@@ -70,3 +70,66 @@
 </body>
 
 </html>
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Remote</title>
+
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            font-family: Arial;
+            background: #111;
+            color: white;
+            align-items: center;
+        }
+
+        button {
+            width: 80%;
+            padding: 25px;
+            font-size: 22px;
+            margin: 10px;
+            border: none;
+            border-radius: 15px;
+            background: #1F8A80;
+            color: white;
+            font-weight: bold;
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>📱 Presentation Remote</h2>
+
+    <button onclick="send('prev')">⬅️ Prev</button>
+    <button onclick="send('next')">➡️ Next</button>
+
+    <script>
+        function send(action) {
+            localStorage.setItem("slide_remote_action", JSON.stringify({
+                action,
+                time: Date.now()
+            }));
+
+            if (navigator.vibrate) navigator.vibrate(50);
+        }
+    </script>
+
+</body>
+
+</html>
